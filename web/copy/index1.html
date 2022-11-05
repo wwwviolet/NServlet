@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+<!--  -->
+<!--  <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="../css/exercise.css">
+  <script language="JavaScript" src="../js/index.js"></script>
+</head>
+<body>
+<div id="div_container">&nbsp;
+  <div id="div_fruit_list">
+    <p class="center f30">欢迎使用水果库存后台管理系统</p>
+    <div style="width: 138.7%;text-align: center" >
+        <form th:action="@{/index}" method="post">
+            <input type="hidden" name="operate" value="search"/>
+<!-- 这个input的value为提交的值 从请求的keyword = request.getParameter("keyword")获取-->
+<!-- th:value="${session.keyword}" 将查询的值长期放在网页显示  -->
+            请输入查询关键字<input type="text" name="keyword" th:value="${session.keyword}">
+            <input type="submit" value="查询">
+        </form>
+        <a th:href="@{/add.re}" style="margin-bottom: 4px;">添加新库存记录</a>
+    </div>
+    <table id="tbl_fruit">
+      <tr>
+        <th>名称</th>
+        <th>单价</th>
+        <th>数量</th>
+        <th>删除</th>
+      </tr>
+      <tr th:if="${#lists.isEmpty(session.fruitList)}">
+        <td colspan="4">对不起库存为空</td>
+      </tr>
+      <tr th:unless="${#lists.isEmpty(session.fruitList)}" th:each="fruit : ${session.fruitList}">
+<!--        <td ><a th:text="${fruit.fname}" th:href="@{'/edit.do?fid='+${fruit.fid}}">苹果</a></td>-->
+        <td ><a th:text="${fruit.fname}" th:href="@{/edit.do(fid=${fruit.fid})}">苹果</a></td>
+        <td th:text="${fruit.price}"></td>
+        <td th:text="${fruit.fcount}"></td>
+<!--        <td><img src="img/a.jpg" class="delImg" th:onclick="'delFruit('+${fruit.fid}+')'"></td>-->
+<!--       |delFruit(${fruit.fid})| 加上||会认为里面是字符串,当遇到thymeleaf表达式会自动识别,自动完成字符串拼接   -->
+          <td><img src="../img/a.jpg" class="delImg" th:onclick="|delFruit(${fruit.fid})|"></td>
+      </tr>
+    </table>
+      <div style="width: 138.7%;text-align: center;padding-top: 4px;">
+        <input type="button" value=" 首 页 " th:onclick="|page(1)|" th:disabled="${session.pageNo==1}"/>
+        <input type="button" value=" 上一页 " th:onclick="|page(${session.pageNo-1})|" th:disabled="${session.pageNo==1}"/>
+        <input type="button" value=" 下一页 " th:onclick="|page(${session.pageNo+1})|" th:disabled="${session.pageNo==session.pageCount}"/>
+        <input type="button" value=" 尾 页 " th:onclick="|page(${session.pageCount})|" th:disabled="${session.pageNo==session.pageCount}"/>
+      </div>
+  </div>
+</div>
+
+</body>
+</html>

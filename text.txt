@@ -1,0 +1,2 @@
+
+update fruit set fname='猫咪',price=12,fcount=12,remark='有猫' where fid = 1

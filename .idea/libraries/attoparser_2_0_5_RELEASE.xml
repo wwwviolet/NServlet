@@ -1,0 +1,23 @@
+<component name="libraryTable">
+  <library name="attoparser-2.0.5.RELEASE">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/web/lib/attoparser-2.0.5.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/web/lib/c3p0-0.9.5.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/web/lib/commons-dbutils-1.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/web/lib/druid-1.1.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/web/lib/javassist-3.20.0-GA.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/web/lib/log4j-1.2.15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/web/lib/mchange-commons-java-0.2.11.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/web/lib/mysql-connector-java-8.0.11.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/web/lib/ognl-3.1.26.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/web/lib/slf4j-api-1.7.25.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/web/lib/slf4j-log4j12-1.7.25.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/web/lib/thymeleaf-3.0.12.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/web/lib/unbescape-1.1.6.RELEASE.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ideaLibSources/mysql-connector-java-8.0.11-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

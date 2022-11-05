@@ -1,0 +1,48 @@
+*{
+    color: #000000;
+}
+body{
+    margin: 0;
+    padding: 0;
+    /* background-color: pink; */
+}
+div{
+    position: relative;
+    float: left;
+}
+#div_container{
+    width: 1250px;
+    height: 1000px;
+    border: 1px solid blue;
+    margin-left: 235px;
+    background-color: aliceblue;
+    float: left;
+    border-radius: 8px;
+}
+#tbl_fruit,#tbl_fruit tr,#tbl_fruit th,#tbl_fruit td{
+    border: 1px solid gray;
+    width: 600px;
+    height: 50px;
+    margin-left:300px;
+    text-align: center;
+    font-size: 16px;
+    font-family: "黑体";
+    font-weight: lighter;
+    color: black;
+    border-collapse: collapse;
+}
+.delImg{
+    width: 24px;
+    height: 24px;
+}
+
+.center{
+    text-align: center;
+    margin-left: 300px;
+    /*border: 1px solid red;*/
+}
+
+.f30{
+    font-size: 30px;
+}
+
