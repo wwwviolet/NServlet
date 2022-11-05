@@ -1,4 +1,6 @@
-package web.myssm.mySpringMVC;
+package web.myssm.mySpringMVC.old;
+
+import javax.servlet.http.HttpServlet;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -7,22 +9,22 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class ViewBaseServlet extends HttpServlet {
+public class modifyViewBaseServlet extends HttpServlet {
 
     private TemplateEngine templateEngine;
-
+    private ServletContext servletContext;
 
     //Servlet的init被请求时,该方法会自动调用
     //在dispatcherServlet.java通过反射获取servletContext传入Controller,
     //通过Controller执行super.processTemplate("index", request, response);进行跳转
-    public void init() throws ServletException {
+    public void init(ServletContext servletContext) throws ServletException {
+        this.servletContext = servletContext;
         // 1.获取ServletContext对象
-        ServletContext servletContext = this.getServletContext();
+        //ServletContext servletContext = this.getServletContext();
 
         // 2.创建Thymeleaf解析器对象
         ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
@@ -66,7 +68,7 @@ public class ViewBaseServlet extends HttpServlet {
         resp.setContentType("text/html;charset=UTF-8");
 
         // 2.创建WebContext对象
-        WebContext webContext = new WebContext(req, resp, getServletContext());
+        WebContext webContext = new WebContext(req, resp, this.servletContext);
 
         // 3.处理模板数据
         templateEngine.process(templateName, webContext, resp.getWriter());

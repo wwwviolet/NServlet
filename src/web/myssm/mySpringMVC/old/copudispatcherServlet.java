@@ -1,15 +1,15 @@
-package web.myssm.mySpringMVC;
+package web.myssm.mySpringMVC.old;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import web.myssm.mySpringMVC.ViewBaseServlet;
 import web.myssm.uitl.StringUtil;
 
-import javax.servlet.*;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.DocumentBuilder;
@@ -17,7 +17,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -26,7 +25,7 @@ import java.util.Map;
 
 
 @WebServlet("*.do")//通配符,表示拦截所有.do结尾的请求,无需加斜杠
-public class dispatcherServlet extends ViewBaseServlet {
+public class copudispatcherServlet extends ViewBaseServlet {
 
 
     private Map<String, Object> beanMap = new HashMap<>();
@@ -81,7 +80,7 @@ public class dispatcherServlet extends ViewBaseServlet {
     }
      */
 
-    public dispatcherServlet() {
+    public copudispatcherServlet() {
 
     }
 
@@ -173,36 +172,36 @@ public class dispatcherServlet extends ViewBaseServlet {
             //通过反射获取Controller对应的方法
             //反射获取所有的方法
             Method[] methods = controllerBeanObj.getClass().getMethods();
-            for (Method method : methods) {
-                if (operateWeb.equals(method.getName())) {
-                    //1.统一获取请求参数
-                    //获取当前方法的参数,返回数组
-                    Parameter[] parameters = method.getParameters();
+            Method method = controllerBeanObj.getClass().getDeclaredMethod(operateWeb, HttpServletRequest.class);
+            if (method != null) {
+                //1.统一获取请求参数
+                //获取当前方法的参数,返回数组
+                Parameter[] parameters = method.getParameters();
+                
+                //2.controller组件中的方法调用
+                //暴力破解
+                method.setAccessible(true);
+                //通过反射调用Controller的方法
+                Object returnObj = method.invoke(controllerBeanObj, request);
 
-                    //2.controller组件中的方法调用
-                    //暴力破解
-                    method.setAccessible(true);
-                    //通过反射调用Controller的方法
-                    Object returnObj = method.invoke(controllerBeanObj, request);
-
-                    //3.视图处理
-                    String methodReturnStr = (String) returnObj;
-                    //查找前缀为redirect:的返回值,如果是则进行重定向
-                    if (methodReturnStr.startsWith("redirect:")) { //比如: redirect:fruit.do
-                        //此处为截取redirect:长度后面的字符串
-                        String redirectStr = methodReturnStr.substring("redirect:".length());
-                        //对截取后的字符串进行重定向
-                        response.sendRedirect(redirectStr);
-                    } else {
-                        //如果不是redirect:开头的返回值,则进行转发
-                        super.processTemplate(methodReturnStr, request, response);
-                    }
+                //3.视图处理
+                String methodReturnStr = (String) returnObj;
+                //查找前缀为redirect:的返回值,如果是则进行重定向
+                if (methodReturnStr.startsWith("redirect:")) { //比如: redirect:fruit.do
+                    //此处为截取redirect:长度后面的字符串
+                    String redirectStr = methodReturnStr.substring("redirect:".length());
+                    //对截取后的字符串进行重定向
+                    response.sendRedirect(redirectStr);
+                } else {
+                    //如果不是redirect:开头的返回值,则进行转发
+                    super.processTemplate(methodReturnStr, request, response);
                 }
-            }
 
-//            else {
-//                throw new RuntimeException("operate值非法!");
-//            }
+            } else {
+                throw new RuntimeException("operate值非法!");
+            }
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
