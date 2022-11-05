@@ -3,7 +3,7 @@ package web.Controllers.old;
 import web.fruit.DAO.FruitDAO;
 import web.fruit.DAO.impl.FruitDAOImpl;
 import web.fruit.Pojo.Fruit;
-import web.myssm.mySpringMVC.ViewBaseServlet;
+import web.myssm.mySpringMVC.old.modifyViewBaseServlet;
 import web.myssm.uitl.StringUtil;
 
 import javax.servlet.ServletException;
@@ -11,13 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 
 
 //@WebServlet("/fruit.do")
-public class newFruitServlet01 extends ViewBaseServlet {
+public class newFruitServlet01 extends modifyViewBaseServlet {
 
     private FruitDAO fruitDAO = new FruitDAOImpl();
 

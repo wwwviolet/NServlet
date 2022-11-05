@@ -1,10 +1,10 @@
 package web.Servlets.old;
 
-import web.myssm.mySpringMVC.ViewBaseServlet;
+import web.myssm.mySpringMVC.old.modifyViewBaseServlet;
 
 
 //@WebServlet("/del.do")
-public class DeleteServlet extends ViewBaseServlet {
+public class DeleteServlet extends modifyViewBaseServlet {
     /*
     private FruitDAO fruitDAO = new FruitDAOImpl();
     @Override

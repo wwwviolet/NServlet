@@ -1,9 +1,9 @@
 package web.Servlets.old;
 
-import web.myssm.mySpringMVC.ViewBaseServlet;
+import web.myssm.mySpringMVC.old.modifyViewBaseServlet;
 
 //@WebServlet("/update.do")
-public class UpdateServlet extends ViewBaseServlet {
+public class UpdateServlet extends modifyViewBaseServlet {
 
     /*
     private FruitDAO fruit= new FruitDAOImpl();

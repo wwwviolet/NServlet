@@ -1,7 +1,7 @@
 package web.Servlets.old;
 
 
-import web.myssm.mySpringMVC.ViewBaseServlet;
+import web.myssm.mySpringMVC.old.modifyViewBaseServlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +10,7 @@ import java.io.IOException;
 
 //Servlet从3.0开始支持注解方式的注册
 //@WebServlet("/index")
-public class IndexServlet extends ViewBaseServlet {
+public class IndexServlet extends modifyViewBaseServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
