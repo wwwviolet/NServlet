@@ -6,6 +6,7 @@ import web.fruit.Pojo.Fruit;
 import web.myssm.mySpringMVC.old.modifyViewBaseServlet;
 import web.myssm.uitl.StringUtil;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,73 +16,91 @@ import java.util.List;
 
 
 //@WebServlet("/fruit.do")
-public class newFruitServlet01 extends modifyViewBaseServlet {
+//不再是Servlet组件,所有不会调用init方法
+public class copyFruitController extends modifyViewBaseServlet {
+
+    //之前FruitServlet时又给Servlet组件,那么其中的init方法一定会被调用
+    //init方法内部会出现一句话:super.init();(不会自动调用,需要自己调用)
+    //ViewBaseServlet的init()方法不会被执行
 
     private FruitDAO fruitDAO = new FruitDAOImpl();
+    private ServletContext servletContext;
 
-    @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //这部分转移到dispatcherServlet中
-        /*
-        //设置编码
-        request.setCharacterEncoding("UTF-8");
-        String operateWeb = request.getParameter("operateWeb");
-        if (StringUtil.isEmpty(operateWeb)) {
-            operateWeb = "index";
-        }
+//    //注释service方法
+//    /*
+//    @Override
+//
+//    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        /*
+//        //设置编码
+//        request.setCharacterEncoding("UTF-8");
+//        String operateWeb = request.getParameter("operateWeb");
+//        if (StringUtil.isEmpty(operateWeb)) {
+//            operateWeb = "index";
+//        }
+//         */
+//
+//
+//        /*
+//        //获取当前类所有方法
+//        Method[] declaredMethods = this.getClass().getDeclaredMethods();
+//        for (Method method : declaredMethods){
+//            //获取方法名
+//            String name = method.getName();
+//            if (operateWeb.equals(name)){
+//                //表示找到和operate同名的方法,那么通过反射技术调用它
+//                //每个servlet都传入request和respond
+//                try {
+//                    method.invoke(this, request,response);
+//                    return;
+//                } catch (IllegalAccessException e) {
+//                    e.printStackTrace();
+//                } catch (InvocationTargetException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//        throw new  RuntimeException("operate值非法!");
+//         */
+//
+//        //使用switch获取operate的值进行调用方法
+//        /*
+//        switch (operateWeb) {
+//            case "index":
+//                index(request, response);
+//                break;
+//            case "add":
+//                add(request,response);
+//                break;
+//            case "del":
+//                del(request, response);
+//                break;
+//            case "edit":
+//                edit(request, response);
+//                break;
+//            case "addRe":
+//                addRe(request, response);
+//                break;
+//            case "update":
+//                update(request,response);
+//                break;
+//            default:
+//                throw new  RuntimeException("operate值非法!");
+//
+//        }
+//     }
+//         */
 
 
-        //获取当前类所有方法
-        Method[] declaredMethods = this.getClass().getDeclaredMethods();
-        for (Method method : declaredMethods){
-            //获取方法名
-            String name = method.getName();
-            if (operateWeb.equals(name)){
-                //表示找到和operate同名的方法,那么通过反射技术调用它
-                //每个servlet都传入request和respond
-                try {
-                    method.invoke(this, request,response);
-                    return;
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        throw new  RuntimeException("operate值非法!");
-         */
-
-
-        //使用switch获取operate的值进行调用方法
-        /*
-        switch (operateWeb) {
-            case "index":
-                index(request, response);
-                break;
-            case "add":
-                add(request,response);
-                break;
-            case "del":
-                del(request, response);
-                break;
-            case "edit":
-                edit(request, response);
-                break;
-            case "addRe":
-                addRe(request, response);
-                break;
-            case "update":
-                update(request,response);
-                break;
-            default:
-                throw new  RuntimeException("operate值非法!");
-
-        }
-         */
-    }
 
     //在网址上直接访问Index
+
+
+
+    public void setServletContext(ServletContext servletContext) throws ServletException {
+        this.servletContext = servletContext;
+        super.init(servletContext);
+    }
 
     private void index(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -209,7 +228,6 @@ public class newFruitServlet01 extends modifyViewBaseServlet {
     private void addRe(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processTemplate("add", request, response);
     }
-
 
     private void update(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //设置编码

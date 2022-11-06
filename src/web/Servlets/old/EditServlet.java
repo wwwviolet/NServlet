@@ -1,10 +1,10 @@
 package web.Servlets.old;
 
-import web.myssm.mySpringMVC.ViewBaseServlet;
+import web.myssm.mySpringMVC.old.modifyViewBaseServlet;
 
 
 //@WebServlet("/edit.do")
-public class EditServlet extends ViewBaseServlet {
+public class EditServlet extends modifyViewBaseServlet {
 /*
     private FruitDAO fruitDAO = new FruitDAOImpl();
     @Override

@@ -2,11 +2,11 @@ package web.Servlets.old;
 
 import web.fruit.DAO.FruitDAO;
 import web.fruit.DAO.impl.FruitDAOImpl;
-import web.myssm.mySpringMVC.ViewBaseServlet;
+import web.myssm.mySpringMVC.old.modifyViewBaseServlet;
 
 
 //@WebServlet("/add.do")
-public class AddServlet extends ViewBaseServlet {
+public class AddServlet extends modifyViewBaseServlet {
     private FruitDAO fruitDAO = new FruitDAOImpl();
     /*
     @Override

@@ -1,7 +1,7 @@
 package web.Servlets.old;
 
 
-import web.myssm.mySpringMVC.ViewBaseServlet;
+import web.myssm.mySpringMVC.old.modifyViewBaseServlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +10,7 @@ import java.io.IOException;
 
 //Servlet从3.0开始支持注解方式的注册
 //@WebServlet("/index")
-public class IndexServlet extends ViewBaseServlet {
+public class IndexServlet extends modifyViewBaseServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -91,7 +91,7 @@ public class IndexServlet extends ViewBaseServlet {
         //那么thymeleaf会将这个逻辑视图名称对应到物理视图名称上去
         //逻辑视图名称: index
         //物理视图名称: view-prefix + 逻辑视图名称 +view-suffix
-        //所以真实的视图名称是:/+index+.html(/1.html)
+        //所以真实的视图名称是:/+index+.html(/copy.html)
         Object fruitList1 = request.getSession().getAttribute("fruitList");
         System.out.println(fruitList1);
         super.processTemplate("index", request, response);
