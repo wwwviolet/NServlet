@@ -27,6 +27,9 @@ public class FruitController{
     private String index(String operate,String keyword,Integer pageNo,HttpServletRequest request){
         HttpSession session = request.getSession();
 
+        if(pageNo==null){
+            pageNo = 1;
+        }
         if (StringUtil.isNotEmpty(operate) && "search".equals(operate)){
             pageNo = 1;
             if (StringUtil.isEmpty(keyword)){
@@ -92,7 +95,7 @@ public class FruitController{
 
     private String addRe(HttpServletRequest request) throws ServletException {
         //processTemplate("add", request, response);
-        return "addRe";
+        return "add";
     }
 
     private String update(Integer fid,String fname,Integer price,Integer fcount,String remark) {

@@ -93,7 +93,7 @@ public class copy2FruitController {
         //那么thymeleaf会将这个逻辑视图名称对应到物理视图名称上去
         //逻辑视图名称: index
         //物理视图名称: view-prefix + 逻辑视图名称 +view-suffix
-        //所以真实的视图名称是:/+index+.html(/1.html)
+        //所以真实的视图名称是:/+index+.html(/copy.html)
         Object fruitList1 = request.getSession().getAttribute("fruitList");
         System.out.println(fruitList1);
         //super.processTemplate("index", request, response);

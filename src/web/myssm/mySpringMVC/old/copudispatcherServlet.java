@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-@WebServlet("*.do")//通配符,表示拦截所有.do结尾的请求,无需加斜杠
+//@WebServlet("*.do")//通配符,表示拦截所有.do结尾的请求,无需加斜杠
 public class copudispatcherServlet extends ViewBaseServlet {
 
 

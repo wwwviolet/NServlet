@@ -90,7 +90,7 @@ public class dispatcherServlet extends ViewBaseServlet {
     public void init() throws ServletException {
         //调用父类的ViewBaseServlet的init()方法
         super.init();
-        System.out.println("inti-config被调用");
+//        System.out.println("inti-config被调用");
         try {
             //得到一个输入流
             InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("applicationContext.xml");
@@ -142,6 +142,7 @@ public class dispatcherServlet extends ViewBaseServlet {
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        System.out.println("到这里");
         //设置编码
         //对发过来的请求进行utf-8编码
         request.setCharacterEncoding("UTF-8");
@@ -161,7 +162,7 @@ public class dispatcherServlet extends ViewBaseServlet {
         //System.out.println(servletPath);
         Object controllerBeanObj = beanMap.get(servletPath);
 
-        //2.获取xx.do请求进来的value,准备调用Controller里的方法
+        //2.获取xx.do通过request请求进来的value,准备调用Controller里的方法
         String operateWeb = request.getParameter("operateWeb");
         if (StringUtil.isEmpty(operateWeb)) {
             operateWeb = "index";
@@ -172,20 +173,50 @@ public class dispatcherServlet extends ViewBaseServlet {
         try {
             //通过反射获取Controller对应的方法
             //反射获取所有的方法
-            Method[] methods = controllerBeanObj.getClass().getMethods();
+            Method[] methods = controllerBeanObj.getClass().getDeclaredMethods();
             for (Method method : methods) {
-                if (operateWeb.equals(method.getName())) {
-                    //1.统一获取请求参数
+                if (operateWeb.equals(method.getName())) {//获取与operateWeb值与该方法值相同,则执行以下代码
+                    //一.统一获取请求参数
                     //获取当前方法的参数,返回数组
                     Parameter[] parameters = method.getParameters();
+                    //parametersValues使用数组存放参数的值
+                    Object[] parameterValues  = new Object[parameters.length];
+                    //对方法的每一个参数进行赋值
+                    for (int i = 0; i < parameterValues.length; i++) {
+                        Parameter parameter = parameters[i];
+                        String parameterName = parameter.getName();
+                        //如果参数的值等于request,respond,session,那么就不是通过请求中获取参数方式
+                        if ("request".equals(parameterName)){
+                            parameterValues[i] = request;
+                        }else if("response".equals(parameterName)){
+                            parameterValues[i] = response;
+                        }else if("session".equals(parameterName)){
+                            parameterValues[i] = request.getSession();
+                        }else {
+                            //从请求中获取参数值(都是String类型)
+                            String parameterValue = request.getParameter(parameterName);//通过请求发过来的单个值,如果没有则为null
+                            String typeName = parameter.getType().getName();
+                            Object parameterObj = parameterValue;
+                            //如果为整型则对参数的值进行转换
+                            if (parameterValue!=null){
+                                if ("java.lang.Integer".equals(typeName)){
+                                    parameterObj = Integer.parseInt(parameterValue);
+                                }
+                            }
+                            //存取的是字符串类型,如:"2",与传入方法的数据类型不匹配,报IllegalArgumentException: argument type mismatch
+                            parameterValues[i]  = parameterObj;
+                        }
+                    }
 
-                    //2.controller组件中的方法调用
+                    //二.controller组件中的方法调用
                     //暴力破解
                     method.setAccessible(true);
                     //通过反射调用Controller的方法
-                    Object returnObj = method.invoke(controllerBeanObj, request);
+                    //Object returnObj = method.invoke(controllerBeanObj, request);
+                    //传入从上面获取的参数数组的值
+                    Object returnObj = method.invoke(controllerBeanObj, parameterValues);
 
-                    //3.视图处理
+                    //三.视图处理(通过调用方法返回的值进行解析,再选择内部转发或者重定向)
                     String methodReturnStr = (String) returnObj;
                     //查找前缀为redirect:的返回值,如果是则进行重定向
                     if (methodReturnStr.startsWith("redirect:")) { //比如: redirect:fruit.do
@@ -233,3 +264,13 @@ public class dispatcherServlet extends ViewBaseServlet {
          */
     }
 }
+
+//常见错误:java.lang.IllegalArgumentException: argument type mismatch
+/*
+    }else {
+        //从请求中获取参数值
+        String parameterValue = request.getParameter(parameterName);//通过请求发过来的单个值,如果没有则为null
+        parameterValues[i]  = parameterValue;  //存取的是字符串类型,如:"2",与传入方法的数据类型不匹配,报IllegalArgumentException: argument type mismatch
+    }
+}
+ */
